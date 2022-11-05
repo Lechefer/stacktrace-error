@@ -6,45 +6,43 @@ import (
 
 const _skip = 1
 
-type CustomError struct {
+type StackTraceError struct {
 	wrappedErr error
 	stacktrace string
 	message    string
 }
 
-func New(message string, args ...any) *CustomError {
-	return &CustomError{
+func New(message string, args ...any) error {
+	return &StackTraceError{
 		stacktrace: takeStacktrace(_skip),
 		message:    fmt.Sprintf(message, args...),
 	}
 }
 
-func Wrap(wrappedErr error) *CustomError {
+func Wrap(wrappedErr error) error {
 	if wrappedErr == nil {
 		return nil
 	}
 
-	return &CustomError{
+	return &StackTraceError{
 		stacktrace: takeStacktrace(_skip),
 		wrappedErr: wrappedErr,
 	}
 }
 
-func Wrapf(wrappedErr error, message string, args ...any) *CustomError {
+func Wrapf(wrappedErr error, message string, args ...any) error {
 	if wrappedErr == nil {
 		return nil
 	}
 
-	var err = CustomError{
+	return &StackTraceError{
 		stacktrace: takeStacktrace(_skip),
 		wrappedErr: wrappedErr,
 		message:    fmt.Sprintf(message, args...),
 	}
-
-	return &err
 }
 
-func (e CustomError) Error() string {
+func (e StackTraceError) Error() string {
 	switch {
 	case e.wrappedErr == nil:
 		return fmt.Sprintf("%s [%s]", e.stacktrace, e.message)

@@ -47,16 +47,16 @@ func Test_ErrorStackTrace(t *testing.T) {
 
 func Test_Wrap(t *testing.T) {
 	t.Run("wrap nil err", func(t *testing.T) {
-		assert.Equal(t, (*CustomError)(nil), Wrap(nil))
+		assert.Equal(t, nil, Wrap(nil))
 	})
 }
 
 func Test_Wrapf(t *testing.T) {
 	t.Run("wrapf nil err", func(t *testing.T) {
-		assert.Equal(t, (*CustomError)(nil), Wrapf(nil, "test msg"))
+		assert.Equal(t, nil, Wrapf(nil, "test msg"))
 	})
 
 	t.Run("args", func(t *testing.T) {
-		assert.Equal(t, "str1 123 34.61 false", Wrapf(New(""), "%v %v %v %v", "str1", 123, 34.61, false).message)
+		assert.Equal(t, "str1 123 34.61 false", Wrapf(New(""), "%v %v %v %v", "str1", 123, 34.61, false).(*StackTraceError).message)
 	})
 }
