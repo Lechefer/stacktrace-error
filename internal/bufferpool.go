@@ -1,4 +1,4 @@
-package sterr
+package internal
 
 import "go.uber.org/zap/buffer"
 

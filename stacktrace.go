@@ -1,6 +1,7 @@
 package sterr
 
 import (
+	"github.com/Lechefer/sterr/internal"
 	"go.uber.org/zap/buffer"
 	"runtime"
 	"strings"
@@ -110,7 +111,7 @@ func takeStacktrace(skip int) string {
 	stack := captureStacktrace(skip+1, stacktraceFull)
 	defer stack.Free()
 
-	buf := Get()
+	buf := internal.Get()
 	defer buf.Free()
 
 	stackfmt := newStackFormatter(buf)
