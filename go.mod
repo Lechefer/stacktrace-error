@@ -1,4 +1,4 @@
-module github.com/Lechefer/stacktrace-error
+module github.com/Lechefer/sterr
 
 go 1.19
 

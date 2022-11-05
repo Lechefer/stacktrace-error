@@ -1,11 +1,10 @@
-package main
+package sterr
 
 import (
+	"go.uber.org/zap/buffer"
 	"runtime"
 	"strings"
 	"sync"
-
-	"go.uber.org/zap/buffer"
 )
 
 var _stacktracePool = sync.Pool{

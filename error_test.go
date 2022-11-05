@@ -1,4 +1,4 @@
-package main
+package sterr
 
 import (
 	"github.com/stretchr/testify/assert"
