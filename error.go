@@ -2,7 +2,6 @@ package sterr
 
 import (
 	"fmt"
-	"strings"
 )
 
 const _skip = 1
@@ -13,25 +12,33 @@ type CustomError struct {
 	message    string
 }
 
-func New(message string) *CustomError {
+func New(message string, args ...any) *CustomError {
 	return &CustomError{
 		stacktrace: takeStacktrace(_skip),
-		message:    message,
+		message:    fmt.Sprintf(message, args...),
 	}
 }
 
-func Wrap(wrappedErr error, args ...any) *CustomError {
+func Wrap(wrappedErr error) *CustomError {
+	if wrappedErr == nil {
+		return nil
+	}
+
+	return &CustomError{
+		stacktrace: takeStacktrace(_skip),
+		wrappedErr: wrappedErr,
+	}
+}
+
+func Wrapf(wrappedErr error, message string, args ...any) *CustomError {
 	if wrappedErr == nil {
 		return nil
 	}
 
 	var err = CustomError{
 		stacktrace: takeStacktrace(_skip),
-	}
-
-	err.wrappedErr = wrappedErr
-	if len(args) > 0 {
-		err.message = fmt.Sprintf(strings.TrimRight(strings.Repeat("%v ", len(args)), " "), args...)
+		wrappedErr: wrappedErr,
+		message:    fmt.Sprintf(message, args...),
 	}
 
 	return &err

@@ -4,7 +4,7 @@ import "testing"
 
 func errorStackTraceBench3() error {
 	err := errorStackTraceBench2()
-	return Wrap(err, "wrap msg")
+	return Wrapf(err, "wrap msg")
 }
 
 func errorStackTraceBench2() error {

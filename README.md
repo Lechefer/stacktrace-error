@@ -1,4 +1,4 @@
-# stacktrace-error
+# sterr
 
 ## Installation
 
