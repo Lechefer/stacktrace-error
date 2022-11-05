@@ -1,9 +1,18 @@
 package sterr
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
+
+func errorStackTraceTest5() error {
+	return Wrap(errors.New("other err msg"))
+}
+
+func errorStackTraceTest4() error {
+	return Wrapf(errors.New("other err msg"), "wrap msg")
+}
 
 func errorStackTraceTest3() error {
 	err := errorStackTraceTest2()
@@ -30,11 +39,13 @@ func Test_ErrorStackTrace(t *testing.T) {
 		f      func() error
 		expStr string
 	}{
-		{name: "err from anonymous func", f: func() error { return New("test msg") }, expStr: "sterr.Test_ErrorStackTrace.func2:33 [test msg]"},
-		{name: "err from var func", f: t2f, expStr: "sterr.Test_ErrorStackTrace.func1:24 [test msg]"},
-		{name: "err with msg", f: errorStackTraceTest1, expStr: "sterr.errorStackTraceTest1:19 [test msg]"},
-		{name: "wrap err with msg", f: errorStackTraceTest2, expStr: "sterr.errorStackTraceTest2:15 -> sterr.errorStackTraceTest1:19 [test msg]"},
-		{name: "wrap with msg", f: errorStackTraceTest3, expStr: "sterr.errorStackTraceTest3:10 [wrap msg] -> sterr.errorStackTraceTest2:15 -> sterr.errorStackTraceTest1:19 [test msg]"},
+		{name: "sterr from anonymous func", f: func() error { return New("test msg") }, expStr: "sterr.Test_ErrorStackTrace.func2:42 [test msg]"},
+		{name: "sterr from var func", f: t2f, expStr: "sterr.Test_ErrorStackTrace.func1:33 [test msg]"},
+		{name: "sterr with msg", f: errorStackTraceTest1, expStr: "sterr.errorStackTraceTest1:28 [test msg]"},
+		{name: "wrap sterr", f: errorStackTraceTest2, expStr: "sterr.errorStackTraceTest2:24 -> sterr.errorStackTraceTest1:28 [test msg]"},
+		{name: "wrap sterr with msg", f: errorStackTraceTest3, expStr: "sterr.errorStackTraceTest3:19 [wrap msg] -> sterr.errorStackTraceTest2:24 -> sterr.errorStackTraceTest1:28 [test msg]"},
+		{name: "other err with msg", f: errorStackTraceTest4, expStr: "sterr.errorStackTraceTest4:14 [wrap msg] -> [other err msg]"},
+		{name: "other err without msg", f: errorStackTraceTest5, expStr: "sterr.errorStackTraceTest5:10 -> [other err msg]"},
 	}
 
 	for _, tt := range tests {

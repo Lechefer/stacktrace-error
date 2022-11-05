@@ -47,10 +47,18 @@ func (e StackTraceError) Error() string {
 	case e.wrappedErr == nil:
 		return fmt.Sprintf("%s [%s]", e.stacktrace, e.message)
 	case len(e.message) == 0:
-		var we = e.wrappedErr.Error()
-		return fmt.Sprintf("%s -> %s", e.stacktrace, we)
+		switch e.wrappedErr.(type) {
+		case *StackTraceError:
+			return fmt.Sprintf("%s -> %s", e.stacktrace, e.wrappedErr.Error())
+		default:
+			return fmt.Sprintf("%s -> [%s]", e.stacktrace, e.wrappedErr.Error())
+		}
 	default:
-		var we = e.wrappedErr.Error()
-		return fmt.Sprintf("%s [%s] -> %s", e.stacktrace, e.message, we)
+		switch e.wrappedErr.(type) {
+		case *StackTraceError:
+			return fmt.Sprintf("%s [%s] -> %s", e.stacktrace, e.message, e.wrappedErr.Error())
+		default:
+			return fmt.Sprintf("%s [%s] -> [%s]", e.stacktrace, e.message, e.wrappedErr.Error())
+		}
 	}
 }
