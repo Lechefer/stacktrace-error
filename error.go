@@ -20,19 +20,18 @@ func New(message string) *CustomError {
 	}
 }
 
-func Wrap(message any, args ...any) *CustomError {
+func Wrap(wrappedErr error, args ...any) *CustomError {
+	if wrappedErr == nil {
+		return nil
+	}
+
 	var err = CustomError{
 		stacktrace: takeStacktrace(_skip),
 	}
 
-	switch msg := message.(type) {
-	case error:
-		err.wrappedErr = msg
-		if len(args) > 0 {
-			err.message = fmt.Sprintf(strings.TrimRight(strings.Repeat("%v ", len(args)), " "), args...)
-		}
-	case string:
-		err.message = fmt.Sprintf(msg, args...)
+	err.wrappedErr = wrappedErr
+	if len(args) > 0 {
+		err.message = fmt.Sprintf(strings.TrimRight(strings.Repeat("%v ", len(args)), " "), args...)
 	}
 
 	return &err

@@ -44,3 +44,13 @@ func Test_ErrorStackTrace(t *testing.T) {
 		})
 	}
 }
+
+func Test_Wrap(t *testing.T) {
+	t.Run("wrap nil err", func(t *testing.T) {
+		assert.Equal(t, (*CustomError)(nil), Wrap(nil))
+	})
+
+	t.Run("args", func(t *testing.T) {
+		assert.Equal(t, "str1 123 34.61 false", Wrap(New(""), "str1", 123, 34.61, false).message)
+	})
+}
