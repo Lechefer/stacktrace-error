@@ -2,4 +2,4 @@
 
 ## Installation
 
-`go get -u github.com/Lechefer/stacktrace-error@latest`
+`go get -u github.com/Lechefer/sterr@latest`
