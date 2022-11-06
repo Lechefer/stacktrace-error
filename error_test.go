@@ -30,7 +30,7 @@ func errorStackTraceTest1() error {
 
 func Test_ErrorStackTrace(t *testing.T) {
 	t2f := func() error {
-		return New("test msg")
+		return New("test msg %v %v %v %v", "str1", 123, 34.61, false)
 	}
 
 	// WARN: changing the line numbers will break the test
@@ -40,7 +40,7 @@ func Test_ErrorStackTrace(t *testing.T) {
 		expStr string
 	}{
 		{name: "sterr from anonymous func", f: func() error { return New("test msg") }, expStr: "sterr.Test_ErrorStackTrace.func2:42 [test msg]"},
-		{name: "sterr from var func", f: t2f, expStr: "sterr.Test_ErrorStackTrace.func1:33 [test msg]"},
+		{name: "sterr from var func and New formating", f: t2f, expStr: "sterr.Test_ErrorStackTrace.func1:33 [test msg str1 123 34.61 false]"},
 		{name: "sterr with msg", f: errorStackTraceTest1, expStr: "sterr.errorStackTraceTest1:28 [test msg]"},
 		{name: "wrap sterr", f: errorStackTraceTest2, expStr: "sterr.errorStackTraceTest2:24 -> sterr.errorStackTraceTest1:28 [test msg]"},
 		{name: "wrap sterr with msg", f: errorStackTraceTest3, expStr: "sterr.errorStackTraceTest3:19 [wrap msg] -> sterr.errorStackTraceTest2:24 -> sterr.errorStackTraceTest1:28 [test msg]"},
