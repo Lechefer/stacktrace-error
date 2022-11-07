@@ -1,5 +1,5 @@
 # sterr
-A convenient library that allows you to log errors with a stack trace of the entire error path.
+A library that allows you to log errors with a stack trace of the entire error path.
 
 ## Quick Start
 `go get -u github.com/Lechefer/sterr@latest`
