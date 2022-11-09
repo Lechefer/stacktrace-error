@@ -12,7 +12,7 @@ type StackTraceError struct {
 	message    string
 }
 
-func New(message string, args ...any) error {
+func New(message string, args ...interface{}) error {
 	return &StackTraceError{
 		stacktrace: takeStacktrace(_skip),
 		message:    fmt.Sprintf(message, args...),
@@ -30,7 +30,7 @@ func Wrap(wrappedErr error) error {
 	}
 }
 
-func Wrapf(wrappedErr error, message string, args ...any) error {
+func Wrapf(wrappedErr error, message string, args ...interface{}) error {
 	if wrappedErr == nil {
 		return nil
 	}
